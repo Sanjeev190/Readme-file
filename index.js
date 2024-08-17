@@ -8,13 +8,13 @@ function renderLicenseBadge(license) {
     if (license.includes('MIT')){
       return `![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)`
     }
-    else if (license==="APACHE 2.0"){
+    else if (license.includes('APACHE 2.0')){
       return `![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)`
    }
-   else if (license==="GNU Affero General Public License v3.0"){
+   else if (license.includes('GNU Affero General Public License v3.0')){
       return`![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)`
   } 
-  else if(license==="Mozilla Public License 2.0"){
+  else if(license.includes('Mozilla Public License 2.0')){
     return `![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)`
   }
    else if (license==="None"){
@@ -35,7 +35,7 @@ function renderLicenseBadge(license) {
     else if (license.includes('Mozilla Public License 2.0')){
       return `https://opensource.org/licenses/MPL-2.0`
     }
-    else if (license==="None"){
+    else if (license.includes('None')){
       return ``
     }
   
@@ -90,7 +90,7 @@ const questions = [
         type:'checkbox',
         name:'license',
         message:'please choose one of the license?',
-        choices:['MIT','Apache License 2.0','GNU Affero General Public License v3.0','Mozilla Public License 2.0']
+        choices:['MIT','Apache License 2.0','GNU Affero General Public License v3.0','Mozilla Public License 2.0','None']
     },
     {
         type:'input',
