@@ -2,14 +2,57 @@
 const inquirer =require('inquirer');
 const colors =require('colors');
 const fs =require('fs');
-const generateMarkdown =require('./assets/generateMarkdown.js');
-
+// const licenseBadge =require('./assets/generateMarkdown.js');
+//This function will return the images of the license
+function renderLicenseBadge(license) {
+    if (license.includes('MIT')){
+      return `![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)`
+    }
+    else if (license==="APACHE 2.0"){
+      return `![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)`
+   }
+   else if (license==="GNU Affero General Public License v3.0"){
+      return`![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)`
+  } 
+  else if(license==="Mozilla Public License 2.0"){
+    return `![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)`
+  }
+   else if (license==="None"){
+    return ``
+  }
+  }
+// this function will return the link of the license
+  function renderLicenseLink(license) {
+    if (license.includes('MIT')){
+      return `https://opensource.org/licenses/MIT`
+    }
+    else if (license.includes('APACHE 2.0')){
+      return `https://opensource.org/licenses/Apache-2.0`
+    }
+    else if (license.includes('GNU Affero General Public License')){
+      return `https://www.gnu.org/licenses/agpl-3.0`
+    }
+    else if (license.includes('Mozilla Public License 2.0')){
+      return `https://opensource.org/licenses/MPL-2.0`
+    }
+    else if (license==="None"){
+      return ``
+    }
+  
+  }
+//   This function will return in to the license section of the readme file and returns the link of the license
+  function renderLicenseSection(license) {
+    if (!license) {
+      return '';
+  }
+  return `
+  
+  This project is licensed under the ${license}. For more information, please visit [this link](${renderLicenseLink(license)}).
+  `;
+  }
+  
 // TODO: Create an array of questions for user input
-// What was your motivation?
-// Why did you build this project? (Note: the answer is not "Because it was a homework assignment.")
-// What problem does it solve?
-// What did you learn?
-// What makes your project stand out?
+
 const questions = [
     {
         type:'input',
@@ -38,10 +81,6 @@ const questions = [
         name:'guidelines',
         message:'please give me the information about contribution gudelines??'
     },
-    // {
-    //     // need to write the contribution gudelines
-
-    // },
     {
         type :'input',
         name:'testInstruction',
@@ -51,7 +90,7 @@ const questions = [
         type:'checkbox',
         name:'license',
         message:'please choose one of the license?',
-        choices:['MIT','Apache','GNU','Mozilla']
+        choices:['MIT','Apache License 2.0','GNU Affero General Public License v3.0','Mozilla Public License 2.0']
     },
     {
         type:'input',
@@ -81,13 +120,24 @@ const questions = [
     const createTableofContenets=((questions)=>{
         console.log(questions.name)
     })
-    console.log(createTableofContenets)
-    return `# ${title}\n
+    const licenseSection=  renderLicenseSection(license);
+    const licenseBadge = renderLicenseBadge(license);
+    // return the type of license
+        console.log(typeof(license))
+        // jusntrying to figur out the license what license badge is returning
+        console.log(licenseBadge)
+   
+    
+    return `## ${licenseBadge}\n
+   
+   
+   ## ${title}\n
+   ## ${licenseBadge}\n
+   
   ## Description
   ${description}\n
   
-//   we need to create a table of contents
-  ## table of contents\n
+  ## Table of contents\n
   *[Description](#description)\n
   *[Installation](#installation)\n
   *[Usage](#usage)\n
@@ -101,6 +151,7 @@ const questions = [
   ## Usage
   ${usageInformation}\n
   ## License
+  ${licenseSection}\n
 
   ## Contributing
   ${guidelines}\n
@@ -112,13 +163,7 @@ const questions = [
   
   `
   }
-  
-//   inquirer
-//   .prompt(questions)
-//   .then((data)=>{
-// const {title,description}=data;
-//   })
-  
+
   
 
 // TODO: Create a function to write README file
@@ -135,7 +180,7 @@ function init() {
     inquirer
   .prompt(questions)
   .then((data)=>{
-const {title,description}=data;
+console.log(data.license)
 
     writeToFile(`README.md`,generateReadme(data))
 })
